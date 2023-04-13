@@ -1,28 +1,35 @@
-def search(item,array):
-    '''Searches the item in the given list, rearranges list in descending order of matches. In each element of the returned list, first part is item name and second part is match value(out of 1).'''
+def search(item,array,extrachar = '!',minimum = 0.1):
+    '''Searches the item in the given list, rearranges list in descending order of matches. In each element of the returned list, first part is item name and second part is match value(out of 1). Extrachar parameter should be a character which is not used in any item of the list. Only matches that are greater than 'minimum' parameter will be added.'''
     tmp = []
     for each in array:
-        a = each
-        itm = item
+        a = list(each)
+        itm = list(item)
         ins = False
         total = len(item)
         matched = 0
         match = 0
+        big = 0
         if len(a) > len(item):
+            big = 'a'
             for rep in range(len(a) - len(item)):
-                itm += '!'
+                itm.append(extrachar)
             total = len(a)
         elif len(item) > len(a):
+            big = 'itm'
             for rep in range(len(item) - len(a)):
-                a += '!'
+                a.append(extrachar)
             total = len(item)
-        # print(a,itm)    
         for i in range(len(itm)):
             if itm[i] == a[i]:
                 matched += 1
+            else:
+                if big == 'a':
+                    itm.insert(i,extrachar)
+                elif big == 'itm':
+                    a.insert(i,extrachar)
         
         match = matched/total
-        if match > 0:
+        if match >= minimum:
             if len(tmp) == 0:
                 tmp.append((each,match))
                 ins = True
